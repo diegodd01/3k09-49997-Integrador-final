@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: mutantes-api
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
+    buildCommand: ''
+    startCommand: ''
+    regions:
+      - oregon

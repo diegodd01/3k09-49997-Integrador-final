@@ -1,0 +1,3 @@
+# CLAUDE
+
+Documento auxiliar (placeholder).
