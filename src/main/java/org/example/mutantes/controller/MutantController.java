@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping
 @Validated
@@ -23,6 +26,18 @@ public class MutantController {
         this.mutantService = mutantService;
         this.statsService = statsService;
     }
+    @GetMapping("/")
+    public Map<String, Object> root() {
+        return Map.of(
+                "service", "Mutantes API",
+                "status", "running",
+                "endpoints", List.of("/mutant", "/stats")
+        );
+    }
+
+
+
+
 
     @PostMapping("/mutant")
     @Operation(summary = "Detecta si es mutante")
