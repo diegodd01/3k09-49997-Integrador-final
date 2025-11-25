@@ -47,7 +47,7 @@ public class MutantController {
         @ApiResponse(responseCode = "400", description = "Request inválido")
     })
     public ResponseEntity<Void> checkMutant(@Valid @RequestBody DnaRequest request) {
-        boolean isMutant = mutantService.analyze(request.getDna());
+        boolean isMutant = mutantService.analyzeDna(request.getDna());
         if (isMutant) return ResponseEntity.ok().build();
         else return ResponseEntity.status(403).build();
     }

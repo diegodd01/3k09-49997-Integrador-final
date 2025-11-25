@@ -1,5 +1,8 @@
 package org.example.mutantes.service;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class MutantDetector {
     private static final int SEQ = 4;
 
