@@ -1,24 +1,24 @@
-🧬 Mutantes API – Detector de ADN Mutante
+ Mutantes API – Detector de ADN Mutante
 
 Proyecto completo para examen MercadoLibre – Spring Boot 3 + Java 17
 
 API REST que detecta si un humano es mutante analizando secuencias de ADN en una matriz NxN.
 Implementa arquitectura profesional, validaciones avanzadas, persistencia, optimizaciones, Docker y documentación Swagger.
 
-🚀 Demo en Producción (Render)
-🔗 API Base URL:
+Demo en Producción (Render)
+ API Base URL:
 
-👉 https://mutantes-api-thc5.onrender.com
+ https://mutantes-api-thc5.onrender.com
 
-🔍 Swagger UI:
+ Swagger UI:
 
-👉 https://mutantes-api-thc5.onrender.com/swagger-ui.html
+https://mutantes-api-thc5.onrender.com/swagger-ui.html
 
-🧾 API Docs (OpenAPI JSON):
+API Docs (OpenAPI JSON):
 
-👉 https://mutantes-api-thc5.onrender.com/api-docs
+https://mutantes-api-thc5.onrender.com/api-docs
 
-📌 Endpoints Principales
+Endpoints Principales
 1️⃣ POST /mutant
 
 Determina si un ADN es mutante.
@@ -61,7 +61,7 @@ src/main/java/org/example/
 
 Implementado en MutantDetector.java con TODAS las optimizaciones que pide MercadoLibre:
 
-✔ Early termination (corta al encontrar 2 secuencias)
++✔ Early termination (corta al encontrar 2 secuencias)
 ✔ Conversión a char[][] (rápido)
 ✔ Boundary checking
 ✔ Comparaciones directas sin loops
@@ -188,3 +188,4 @@ Inválido (400)
 {
   "dna": ["ATXCGA","CAGTGC"]
 }
+Gracias.
