@@ -1,4 +1,5 @@
 LINK REPOSITORIO: https://github.com/diegodd01/3k09-49997-Integrador-final.git
+
 Service ID: srv-d4iggikhg0os739tl8pg
  Mutantes API – Detector de ADN Mutante
 
@@ -98,6 +99,8 @@ id	bigint	PK autoincremental
 dna_hash	varchar(64)	Único (SHA-256)
 is_mutant	boolean	Resultado
 created_at	timestamp	Fecha de análisis
+
+
 🧪 Testing (JUnit 5)
 
 La suite completa incluye:
@@ -108,6 +111,9 @@ MutantServiceTest	5 tests
 StatsServiceTest	6 tests
 MutantControllerTest	8 tests
 TOTAL: 36 tests	
+comando para correr tests
+./gradlew test
+
 
 ✔ Casos normales
 ✔ Casos borde
