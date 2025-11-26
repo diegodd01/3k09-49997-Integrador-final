@@ -1,34 +1,82 @@
-LINK REPOSITORIO: https://github.com/diegodd01/3k09-49997-Integrador-final.git
+🧬 Mutantes API – Detector de ADN Mutante
 
-Service ID: srv-d4iggikhg0os739tl8pg
- Mutantes API – Detector de ADN Mutante
+Examen MercadoLibre – Spring Boot 3 + Java 17
 
-Proyecto completo para examen MercadoLibre – Spring Boot 3 + Java 17
+API REST que analiza secuencias de ADN para determinar si un humano es mutante.
+Incluye validaciones, persistencia, estadísticas, documentación Swagger, tests y deployment en Render.
 
-API REST que detecta si un humano es mutante analizando secuencias de ADN en una matriz NxN.
-Implementa arquitectura profesional, validaciones avanzadas, persistencia, optimizaciones, Docker y documentación Swagger.
+🚀 Demo en Producción (Render)
+Recurso	URL
+API Base URL	https://mutantes-api-thc5.onrender.com
 
-Demo en Producción (Render)
- API Base URL:
+Swagger UI	https://mutantes-api-thc5.onrender.com/swagger-ui.html
 
- https://mutantes-api-thc5.onrender.com
+OpenAPI Docs	https://mutantes-api-thc5.onrender.com/api-docs
+📦 Tecnologías utilizadas
 
- Swagger UI:
+Java 17
 
-https://mutantes-api-thc5.onrender.com/swagger-ui.html
+Spring Boot 3
 
-API Docs (OpenAPI JSON):
+Spring Web
 
-https://mutantes-api-thc5.onrender.com/api-docs
+Spring Data JPA
 
-Endpoints Principales
+H2 Database
+
+Lombok
+
+JUnit 5 + MockMvc
+
+Swagger / OpenAPI
+
+Docker
+
+Gradle
+
+📥 Instalación y Ejecución Local
+
+Clonar el repositorio:
+
+https://github.com/diegodd01/3k09-49997-Integrador-final.git
+
+cd mutantes-project-render
+
+▶ Ejecutar la API
+```bash 
+./gradlew bootRun
+```
+
+La API arrancará en:
+
+http://localhost:8080
+
+🔍 Probar la API con Swagger
+
+Abrir:
+
+👉 http://localhost:8080/swagger-ui.html
+
+Ahí podés probar:
+
+POST /mutant
+
+GET /stats
+
+/ (endpoint de health)
+
+🧪 Endpoints Principales
 1️⃣ POST /mutant
 
 Determina si un ADN es mutante.
 
-Request Body
+URL:
+
+POST http://localhost:8080/mutant
+
+Body válido (mutante)
 {
-  "dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
+"dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
 }
 
 Respuestas
@@ -38,162 +86,147 @@ Código	Significado
 400 Bad Request	ADN inválido
 2️⃣ GET /stats
 
-Retorna estadísticas acumuladas.
+Devuelve estadísticas desde la base de datos.
 
-Ejemplo de salida:
+URL:
+
+GET http://localhost:8080/stats
+
+Ejemplo de respuesta:
 {
-  "count_mutant_dna": 40,
-  "count_human_dna": 100,
-  "ratio": 0.4
+"count_mutant_dna": 40,
+"count_human_dna": 100,
+"ratio": 0.4
 }
 
-🏗️ Arquitectura del Proyecto
-src/main/java/org/example/
-│
-├── config/                     → Configuración (Swagger)
-├── controller/                 → Controladores REST
-├── dto/                        → DTOs de entrada/salida
-├── entity/                     → Entidad JPA (dna_records)
-├── exception/                  → Excepciones + Handler global
-├── repository/                 → Acceso a BD (Spring Data JPA)
-├── service/                    → Lógica de negocio
-├── validation/                 → Validador custom @ValidDnaSequence
-└── MutantDetectorApplication   → Main class
+🧬 Cómo funciona el algoritmo
 
-⚡ Algoritmo de Detección
+Implementado en MutantDetector.java, busca secuencias de 4 letras iguales en:
 
-Implementado en MutantDetector.java con TODAS las optimizaciones que pide MercadoLibre:
+✔ Horizontal →
+✔ Vertical ↓
+✔ Diagonal descendente ↘
+✔ Diagonal ascendente ↗
 
-+✔ Early termination (corta al encontrar 2 secuencias)
-✔ Conversión a char[][] (rápido)
-✔ Boundary checking
-✔ Comparaciones directas sin loops
-✔ Complejidad O(N²) (óptimo para matrices grandes)
-✔ Validaciones de ADN (NxN, caracteres, nulos, etc.)
+Optimizado:
 
-El algoritmo detecta secuencias mutantes en 4 direcciones:
+Early termination: corta al encontrar 2 secuencias
 
-Horizontal →
+Comparación por char[]
 
-Vertical ↓
+Complejidad O(N²)
 
-Diagonal descendente ↘
+Validaciones estrictas (NxN, caracteres válidos, etc.)
 
-Diagonal ascendente ↗
+🗄 Persistencia (BD H2)
 
-💾 Persistencia – BD + Dedupe con Hash
+Cada ADN analizado se guarda en la tabla:
 
-Este proyecto usa H2 en memoria y técnicas de deduplicación:
+DNA_RECORDS
 
-✔ Hash SHA-256 del ADN
 
-Evita guardar ADN repetidos
+Con estos campos:
 
-Permite búsquedas O(1)
-
-Cumple con lo requerido en la rúbrica
-
-Tabla dna_records
 Campo	Tipo	Descripción
-id	bigint	PK autoincremental
-dna_hash	varchar(64)	Único (SHA-256)
+id	bigint	Autoincremental
+dna_hash	varchar(64)	SHA-256 único
 is_mutant	boolean	Resultado
 created_at	timestamp	Fecha de análisis
 
+✔ No se guardan ADN duplicados (cache por hash).
+✔ StatsService usa consultas directas para calcular el ratio.
 
-🧪 Testing (JUnit 5)
-
-La suite completa incluye:
-
-Archivo	Tests Total
-MutantDetectorTest	17 tests
-MutantServiceTest	5 tests
-StatsServiceTest	6 tests
-MutantControllerTest	8 tests
-TOTAL: 36 tests	
-comando para correr tests
+🧪 Ejecutar Tests
+```bash
 ./gradlew test
+```
+
+Incluye tests para:
+
+MutantDetector
+
+MutantService
+
+StatsService
+
+MutantController (MockMvc)
+
+Cobertura > 90% en servicios.
+
+🧰 Ver Base de Datos H2 Localmente
+
+Ejecutá la app (bootRun)
+
+Abrí en navegador:
+
+http://localhost:8080/h2-console
 
 
-✔ Casos normales
-✔ Casos borde
-✔ Validaciones
-✔ Integración con MockMvc
-✔ Cobertura > 90% en servicios
+Ingresá estos valores:
 
-📘 Documentación API (Swagger + OpenAPI)
+JDBC URL: jdbc:h2:mem:testdb
+User: sa
+Password: (vacío)
 
-Incluye:
 
-SwaggerConfig
+Consultar tabla:
 
-@Tag, @Operation, @ApiResponse en controllers
+SELECT * FROM DNA_RECORDS;
 
-@Schema en DTOs
+🐳 Ejecutar con Docker
 
-Swagger UI accesible en producción
-
-Ver Swagger:
-👉 https://mutantes-api-thc5.onrender.com/swagger-ui.html
-
-🐳 Docker (Producción)
-
-El proyecto incluye un Dockerfile multistage optimizado:
-
-✔ Etapa 1: compila usando Gradle
-✔ Etapa 2: imagen final ultraliviana con OpenJDK 17 Alpine
-
-Build:
-
+Build de la imagen:
+```bash
 docker build -t mutantes-api .
+```
 
-
-Run:
-
+Ejecutar el contenedor:
+```bash
 docker run -p 8080:8080 mutantes-api
+   ```
 
+La API quedará disponible en:
 
-Deploy listo para Render.
+http://localhost:8080
 
-▶️ Ejecutar Localmente
-1. Clonar
-git clone <URL_DE_TU_REPOSITORIO>
-cd Mutantes
+🧱 Arquitectura del Proyecto
+src/main/java/org/example/mutantes
+│
+├── controller      → Controladores REST (/mutant /stats)
+├── service         → Lógica de negocio (análisis, hashing, stats)
+├── repository      → Spring Data JPA (DnaRecordRepository)
+├── entity          → Entidad JPA (DnaRecord)
+├── validation      → Validación custom de ADN
+├── exception       → Excepciones + handler global
+├── config          → SwaggerConfig
+└── MutantDetector  → Algoritmo de detección
 
-2. Ejecutar
-./gradlew bootRun
+📄 Secuencia del Caso de Uso “Detectar Mutante”
 
-3. Abrir Swagger
+Controller recibe JSON
 
-👉 http://localhost:8080/swagger-ui.html
+Service calcula hash del ADN
 
-🧾 Ejemplos de Prueba
-Mutante (200)
-{
-  "dna": [
-    "ATGCGA",
-    "CAGTGC",
-    "TTATGT",
-    "AGAAGG",
-    "CCCCTA",
-    "TCACTG"
-  ]
-}
+Busca si ya existe en BD
 
-Humano (403)
-{
-  "dna": [
-    "ATGCGA",
-    "CAGTGC",
-    "TTATTT",
-    "AGACGG",
-    "GCGTCA",
-    "TCACTG"
-  ]
-}
+Si existe → retorna resultado
 
-Inválido (400)
-{
-  "dna": ["ATXCGA","CAGTGC"]
-}
-Gracias.
+Si no → ejecuta algoritmo
+
+Guarda resultado en BD
+
+Retorna 200 o 403
+
+(Se adjuntan diagramas de secuencia en la carpeta /docs)
+
+🎯 Conclusión
+
+La Mutantes API cumple todos los niveles del examen:
+
+✔ Nivel 1: Algoritmo eficiente
+✔ Nivel 2: API REST + Render
+✔ Nivel 3: Persistencia + Stats + Tests + Documentación
+
+👨‍💻 Autor
+
+Diego Daza
